@@ -1,8 +1,10 @@
 <?php
-session_start();
+//session_start();
 $map = array_fill(0, 15000, 0);
-$ships = $_SESSION['game'];
+$ships = $_SESSION['game']->ships;
 $size = 0;
+$ships = ($_SESSION['game']->getShipsRun());
+
 foreach ($ships as $ship) {
     $size += $ship[2] * $ship[3];
 }
@@ -11,8 +13,6 @@ echo "<div class='grid'>";
 for ($i = 0; $i < 15000 - $size; $i++) {
     echo "<div></div>";
 }
-
-$here = 0;
 foreach ($ships as $key => $ship) {
     $x = $ship[0] + 1;
     $y = $ship[1] + 1;
