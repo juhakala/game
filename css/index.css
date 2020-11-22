@@ -1,0 +1,16 @@
+.control {
+    width: 17%;
+    height: 0;
+    padding-bottom: 40%;
+    background: grey;
+}
+.left {
+    float: left;
+}
+.right {
+    float: right;
+}
+.center {
+    margin: auto;
+    width: 65%;
+}
