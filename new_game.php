@@ -13,6 +13,7 @@ if (!isset($_SESSION['game']) || $_SESSION['game'] == "") {
     $values = $ini['ships_values'];
     $_SESSION['game'] = new Game($ships, $values);
     $_SESSION['phase'] = 0;
+    echo $_SESSION['phase'];
 } else if ($_GET['name'] === 'phase') {
     if ($_SESSION['phase'] <= 0)
         $_SESSION['phase'] = 1;
