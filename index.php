@@ -27,7 +27,7 @@ session_start();
                 <!--center_grid included in $.get method-->
             </div>
         </div>
-        <button onclick='phaseReset()'>activate</button>
+        <button onclick='phaseReset()'>Reset</button>
     </body>
 </html>
 <script>
