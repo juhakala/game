@@ -25,6 +25,17 @@ echo "</div>";
 
 ?>
 <script>
+var actv = '';
+    var actv = '<?php echo $_SESSION['active_ship']; ?>';
+    if (actv != '') {
+        $.get('control_panel.php', {}, function (data) {
+            if (actv % 2 == 0)
+                $('.left').html(data);
+            else
+                $('.right').html(data);
+        });
+    }
+
     function selectShip(key, place) {
         console.log(<?php echo $_SESSION['phase']; ?>);
         if (<?php echo $_SESSION['phase']; ?> <= 0) {

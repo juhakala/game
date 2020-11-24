@@ -1,11 +1,10 @@
 <?php
 require_once('classes/Game.class.php');
 session_start();
-if ($_GET['name'] === 'reset') {
-    $_SESSION['phase'] = -1;
-    $_SESSION['control_panel'] = "";
-    echo -1;
-    die();
+
+if (isset($_GET['name']) && $_GET['name'] === 'reset') {
+    $_SESSION['game'] = "";
+    $_SESSION['active_ship'] = "";
 }
 if (!isset($_SESSION['game']) || $_SESSION['game'] == "") {
     $ini = parse_ini_file('config.ini', true);
@@ -14,8 +13,10 @@ if (!isset($_SESSION['game']) || $_SESSION['game'] == "") {
     $_SESSION['game'] = new Game($ships, $values);
     $_SESSION['phase'] = 0;
     echo $_SESSION['phase'];
-} else if ($_GET['name'] === 'phase') {
-    if ($_SESSION['phase'] <= 0)
+} else if (isset($_GET['name']) && $_GET['name'] === 'phase') {
+    if ($_SESSION['phase'] <= 0) {
         $_SESSION['phase'] = 1;
+        $_SESSION['game']->ships[2]->run[0] += 2;
+    }
     echo $_SESSION['phase'];
 }
