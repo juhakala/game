@@ -1,8 +1,13 @@
 <?php
+require_once('Dice.class.php');
 require_once('Ship.class.php');
 Class Game {
+    public $dice;
     public $ships = array();
+    public $turn_list = array();
+    public $used_list = array();
     function __construct($arr, $values) {
+        $this->dice = new Dice();
         $ally = 0;
         $enemy = 1;
         foreach($arr as $key => $ship) {
@@ -15,6 +20,15 @@ Class Game {
                 $enemy += 2;
             }
         }
+        $this->newTurn();
+    }
+    function newTurn() {
+        $this->turn_list = array();
+        $this->used_list = array();
+        foreach ($this->ships as $key => $ship) {
+            $this->turn_list[$key] = ($ship->name);
+        }
+        ksort($this->turn_list);
     }
     function getShipsRun() {
         $arr = array();
