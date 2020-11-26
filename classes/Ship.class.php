@@ -35,6 +35,19 @@ Class Ship {
         else if ($this->values[4] == -2)
             $this->run[1] -= 1;
     }
+    function checkCollision($map, $id) {
+        if ($this->run[2] + $this->run[0] > 149 || $this->run[0] < 0 ||
+            $this->run[3] + $this->run[1] > 99 || $this->run[1] < 0)
+            return (1);
+        for ($i = 0; $i < $this->run[3]; $i++) {
+            for ($j = 0; $j < $this->run[2]; $j++) {
+                if ($map[$j + $this->run[0] + ($i + $this->run[1]) * 150] != $id &&
+                    $map[$j + $this->run[0] + ($i + $this->run[1]) * 150] != -1)
+                    return (1);
+            }
+        }
+        return (0);
+    }
     function getRun() { return $this->run; }
     function getValues() { return $this->values; }
 }   

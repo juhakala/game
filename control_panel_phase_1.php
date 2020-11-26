@@ -37,16 +37,21 @@ if ($_SESSION['phase'] > 1) {
 	</div>
 <?php
 	}
-	if ($_SESSION['phase'] > 2) {
-		if ($_SESSION['phase'] === 3) {
-			?><input class='btn-plus-minus move' type="button" onclick="ft_shoot()" value='Shootie'><?php
+	if ($_SESSION['phase'] > 0 && array_key_exists($_SESSION['active_ship'], $_SESSION['game']->turn_list)) {
+		if ($_SESSION['phase'] < 4) {
+			?><div onclick='ft_shoot()' class='btn-activate'>Shoot</div><?php
 		} else {
-			?><input class='btn-plus-minus move move-over' type="button" value='Shootie'><?php
-		} if ($_SESSION['phase'] === 4) {
-			?><br><input class='btn-plus-minus move' type="button" onclick="ft_finish()" value='Finish'><?php
-		}
+			?><div class='btn-activate btn-activated'>Shoot</div><?php
+		} 
 	}
 }
+echo "<div class='finish'>";
+if ($_SESSION['phase'] > 0 && array_key_exists($_SESSION['active_ship'], $_SESSION['game']->turn_list)) {
+	?><div onclick='ft_finish()' class='btn-activate'>Finish</div><?php
+} else {
+	?><div class='btn-activate btn-activated'>Finish</div><?php
+}
+echo "</div>";
 ?>
 <script>
 
@@ -124,6 +129,7 @@ function ft_shoot() {
 function ft_finish() {
 	$.get('new_game.php', {name:'finish'}, function (data) {
 		$(".center").load("center_grid.php");
+		$(".finish").load("control_panel_phase_1.php .finish");
 		$.get('ship_lists.php', {}, function (data) {
         	$('.shipList').html(data);
     	});

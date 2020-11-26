@@ -6,7 +6,7 @@ session_start();
 $ships = $_SESSION['game']->getShipsValues();
 if (isset($_GET['id']))
     $_SESSION['active_ship'] = $_GET['id'];
-if (isset($_SESSION['active_ship']) && $_SESSION['active_ship'] != "") {
+if (isset($_SESSION['active_ship']) && $_SESSION['active_ship'] != "" && array_key_exists($_SESSION['active_ship'], $_SESSION['game']->turn_list)) {
     $ship = $ships[$_SESSION['active_ship']];
     ?>
     <div class='controlPanel'>
@@ -28,8 +28,8 @@ if (isset($_SESSION['active_ship']) && $_SESSION['active_ship'] != "") {
         //phase <= 0
         function activateShip() {
             $.get('new_game.php', {name:'phase'}, function (data) {
-                $(".controlPanel").load("control_panel.php");
-                //$(".center").load("center_grid.php");
+                //$(".controlPanel").load("control_panel.php");
+                $(".center").load("center_grid.php");
                 console.log('activate button ' + data);
             });
         }

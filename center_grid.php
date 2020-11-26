@@ -38,7 +38,7 @@ var actv = '';
 
     function selectShip(key, place) {
         console.log(<?php echo $_SESSION['phase']; ?>);
-        if (<?php echo $_SESSION['phase']; ?> <= 0) {
+        if (<?php echo $_SESSION['phase']; ?> <= 0 && key % 2 != <?php echo $_SESSION['last']; ?> % 2) {
             $.get('control_panel.php', {id:key}, function (data) {
                 if (place == 0) {
                     $('.left').html(data);
