@@ -56,8 +56,10 @@ Class Game {
         }
     }
     function checkShipCollision($index) {
-        if ($this->ships[$index]->checkCollision($this->col_map, $index))
+        if ($this->ships[$index]->checkCollision($this->col_map, $index)) {
+            //$this->killShip($index);
             return (1);
+        }
         return (0);
     }
     

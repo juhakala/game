@@ -2,6 +2,14 @@
 require_once('classes/Game.class.php');
 session_start();
 
+function checkIfLeft($index) {
+    foreach ($_SESSION['game']->turn_list as $key => $ship) {
+        if ($key % 2 != $index % 2)
+            return (0);
+    }
+    return (1);
+}
+
 if (isset($_GET['name']) && $_GET['name'] === 'reset') {
     $_SESSION['game'] = "";
     $_SESSION['active_ship'] = "";
@@ -51,7 +59,22 @@ if (!isset($_SESSION['game']) || $_SESSION['game'] == "") {
             $_SESSION['game']->ships[$_SESSION['active_ship']]->movement[0] = 1;
             if ($_SESSION['game']->ships[$_SESSION['active_ship']]->phase[2] == 0)
                 $_SESSION['phase'] = 3;
-            echo "collision: " .$_SESSION['game']->checkShipCollision($_SESSION['active_ship']) . "\n";
+            if ($_SESSION['game']->checkShipCollision($_SESSION['active_ship']) == 1) {
+                if (checkIfLeft($_SESSION['active_ship']) == 1)
+                    $_SESSION['last'] = $_SESSION['active_ship'] + 1;
+                else
+                    $_SESSION['last'] = $_SESSION['active_ship'];
+                unset($_SESSION['game']->turn_list[$_SESSION['active_ship']]);
+                unset($_SESSION['game']->ships[$_SESSION['active_ship']]);
+                $_SESSION['active_ship'] = "";
+                $_SESSION['phase'] = 0;
+                if (empty($_SESSION['game']->turn_list)) {
+                    $_SESSION['last'] = 1;
+                    $_SESSION['game']->newTurn();
+                }
+                echo "destruction\n";
+                $_SESSION['game']->makeCollision();
+            }
         }
         echo $_GET['val'];
     } else if ($_GET['name'] == 'shoot') {
@@ -59,15 +82,24 @@ if (!isset($_SESSION['game']) || $_SESSION['game'] == "") {
         // shootie mac shootiephase
         $_SESSION['phase'] = 4;
     } else if ($_GET['name'] == 'finish') {
-        $_SESSION['game']->used_list[] = $_SESSION['game']->turn_list[$_SESSION['active_ship']]; 
+        $_SESSION['game']->used_list[$_SESSION['active_ship']] = $_SESSION['game']->turn_list[$_SESSION['active_ship']]; 
         unset($_SESSION['game']->turn_list[$_SESSION['active_ship']]);
         print_r($_SESSION['game']->turn_list);
         print_r($_SESSION['game']->used_list);
-        $_SESSION['last'] = $_SESSION['active_ship'];
+        if (checkIfLeft($_SESSION['active_ship']) == 1)
+            $_SESSION['last'] = $_SESSION['active_ship'] + 1;
+        else
+            $_SESSION['last'] = $_SESSION['active_ship'];
         $_SESSION['active_ship'] = "";
         $_SESSION['phase'] = 0;
-        if (empty($_SESSION['game']->turn_list))
+        if (empty($_SESSION['game']->turn_list)) {
             $_SESSION['game']->newTurn();
+            if (checkIfLeft(1) == 1)
+                    $_SESSION['last'] = 0;
+                else
+                    $_SESSION['last'] = 1;
+        }
+        $_SESSION['game']->makeCollision();
     }
 }
 //echo $_SESSION['game']->ships[2]->values[5];
